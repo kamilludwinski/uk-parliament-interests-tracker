@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sqlalchemy import Boolean, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, ForeignKey, ForeignKeyConstraint, Integer, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -39,3 +39,30 @@ class MemberRow(Base):
     membership_end_date: Mapped[str | None] = mapped_column(Text(), nullable=True)
     status_is_active: Mapped[bool | None] = mapped_column(Boolean(), nullable=True)
     status_description: Mapped[str | None] = mapped_column(Text(), nullable=True)
+
+
+class RegisteredInterestRow(Base):
+    """API interest `id` is unique per member, not globally — composite PK."""
+
+    __tablename__ = "registered_interests"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["member_id", "parent_interest_id"],
+            ["registered_interests.member_id", "registered_interests.interest_id"],
+            ondelete="CASCADE",
+        ),
+    )
+
+    member_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("members.id", ondelete="CASCADE"), primary_key=True
+    )
+    interest_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    category_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    category_name: Mapped[str] = mapped_column(Text(), nullable=False)
+    category_sort_order: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    parent_interest_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    interest_text: Mapped[str] = mapped_column(Text(), nullable=False)
+    created_when: Mapped[str | None] = mapped_column(Text(), nullable=True)
+    last_amended_when: Mapped[str | None] = mapped_column(Text(), nullable=True)
+    deleted_when: Mapped[str | None] = mapped_column(Text(), nullable=True)
+    is_correction: Mapped[bool | None] = mapped_column(Boolean(), nullable=True)
