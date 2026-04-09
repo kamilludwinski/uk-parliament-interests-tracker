@@ -3,3 +3,5 @@ __pycache__/
 *.db
 registered_interests.log
 members.log
+web/node_modules/
+web/dist/

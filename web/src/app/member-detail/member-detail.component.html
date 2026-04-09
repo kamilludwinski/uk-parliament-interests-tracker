@@ -1,0 +1,66 @@
+<div class="page">
+  <a routerLink="/" class="back">← Back to list</a>
+
+  @if (loading) {
+    <p class="status">Loading…</p>
+  }
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  @if (!loading && !error && member) {
+    <header class="member-header">
+      @if (member.thumbnail_url) {
+        <img [src]="member.thumbnail_url" alt="" class="thumb" width="80" height="80" />
+      }
+      <div>
+        <h1>{{ member.name_display_as }}</h1>
+        <p class="full-title">{{ member.name_full_title }}</p>
+        <ul class="meta">
+          <li><strong>List as:</strong> {{ member.name_list_as }}</li>
+          @if (member.name_address_as) {
+            <li><strong>Address as:</strong> {{ member.name_address_as }}</li>
+          }
+          <li><strong>Gender:</strong> {{ member.gender }}</li>
+          @if (member.party) {
+            <li>
+              <strong>Party:</strong> {{ member.party.name }}
+              @if (member.party.abbreviation) {
+                ({{ member.party.abbreviation }})
+              }
+            </li>
+          }
+          @if (member.constituency) {
+            <li><strong>Constituency:</strong> {{ member.constituency }}</li>
+          }
+          @if (member.status_description) {
+            <li><strong>Status:</strong> {{ member.status_description }}</li>
+          }
+        </ul>
+      </div>
+    </header>
+
+    <section class="interests">
+      <h2>Registered interests ({{ interests.length }})</h2>
+      @if (interests.length === 0) {
+        <p class="empty">No registered interests stored for this member.</p>
+      } @else {
+        @for (section of groupedSections(); track section.category) {
+          <article class="category">
+            <h3>{{ section.category }}</h3>
+            <ul>
+              @for (row of section.rows; track row.interest_id) {
+                <li [class.child]="row.parent_interest_id !== null">
+                  <pre class="interest-body">{{ row.interest_text }}</pre>
+                  @if (row.created_when) {
+                    <div class="when">Registered: {{ row.created_when }}</div>
+                  }
+                </li>
+              }
+            </ul>
+          </article>
+        }
+      }
+    </section>
+  }
+</div>

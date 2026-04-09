@@ -93,6 +93,28 @@ Initial focus:
 - parsing selected categories
 - building a stable schema before any public dashboard
 
+## Web UI (Angular)
+
+A read-only browser UI lives in `web/`. It reads from the SQLite database through a small **FastAPI** service.
+
+1. **API** (from repository root, with your virtualenv if you use one):
+
+   ```bash
+   uvicorn api.main:app --reload --host 127.0.0.1 --port 8000
+   ```
+
+2. **Angular** (separate terminal):
+
+   ```bash
+   cd web && npm start
+   ```
+
+3. Open **http://localhost:4200/** — browse members, search by name, open a member to see registered interests.
+
+The API base URL is configured in `web/src/environments/environment.ts` (default `http://127.0.0.1:8000`). CORS allows the Angular dev server on port 4200.
+
+**One command (Git Bash / Linux / macOS):** from the repo root run `./server.sh` (make it executable once with `chmod +x server.sh`). It starts `uvicorn` and `npm start` in `web/`; stop both with Ctrl+C. If you use a Python venv at `.venv/`, the script activates it before starting the API.
+
 ## Notes
 
 - This repository is focused on public-interest data engineering and analytics.

@@ -1,0 +1,25 @@
+/* Global */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+code {
+  font-size: 0.9em;
+  background: #e8eaed;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}

@@ -2,3 +2,5 @@ requests
 types-requests
 sqlalchemy>=2.0
 alembic
+fastapi
+uvicorn[standard]
